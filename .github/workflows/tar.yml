@@ -1,0 +1,30 @@
+name: Create tar.gz
+
+on:
+  workflow_dispatch:
+
+jobs:
+  making-zip:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Make tar.gz
+      run: |
+        cd ${GITHUB_WORKSPACE}
+        gzip kernel.tar
+        
+    - name: Configure Git
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "actions@github.com"
+        
+    - name: Add and Commit file
+      run: |
+        git add -A
+        git commit -m "Ready to download"
+        git push
